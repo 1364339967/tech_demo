@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="JS/vue.js"></script>
+    <script src="https://unpkg.com/tween.js@16.3.4"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <style type="text/css">
+        .inputStyle { background-color: lightblue; }
+
+        .fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+        .fade-enter, .fade-leave { opacity: 0; }
+    </style>
+</head>
+<body>
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">{{ todo.text }}
+            </li>
+        </ol>
+    </div>
+    <div id="input-1">
+        <span>{{message}}</span>
+        <input type="text" v-model="message" v-bind:class="[inputStyle]" v-bind:style="{color:'red'}" />
+    </div>
+
+    <div id="app-7">
+        <ul v-bind:style="{styleObject}">
+            <todo-item v-for="item in todos" v-bind:todo="item"></todo-item>
+        </ul>
+    </div>
+
+    <div id="demo">
+        <button v-on:click="show =!show">
+            Toggle
+        </button>
+        <transition name="fade">
+            <p v-if="show">help</p>
+        </transition>
+    </div>
+
+    <div id="animated-number-demo">
+        <input v-model="number" type="number" step="20" />
+        <p>{{ animatedNumber }}</p>
+    </div>
+</body>
+
+<script type="text/javascript">
+    /*vue-component*/
+    Vue.component("todo-item", {
+        props: ["todo"],
+        template: "<li>{{todo.text}}</li>"
+    })
+    var app7 = new Vue({
+        el: '#app-7',
+        data: {
+            todos: [
+              { text: 'Learn JavaScript' },
+              { text: 'Learn Vue' },
+              { text: 'Build something awesome' }
+            ],
+            styleObject:
+            {
+                color: 'red'
+            }
+        }
+    })
+    /*vue-for*/
+    var app4 = new Vue({
+        el: '#app-4',
+        data: {
+            todos: [
+              { text: 'JavaScript' },
+              { text: 'Vue' },
+              { text: 'awesome' }
+            ]
+        }
+    })
+    /*vue-model*/
+    var app1 = new Vue({
+        el: "#input-1",
+        data: {
+            message: "hello",
+            inputStyle: "inputStyle",
+            styleObject:
+                {
+                    color: 'orange',
+                    fontSize: '15px',
+                    border: "none"
+                }
+        }
+    })
+    /*vue-if*/
+    new Vue({
+        el: "#demo",
+        data: { show: true }
+    })
+    /*Tweenjs*/
+    new Vue({
+        el: '#animated-number-demo',
+        data: {
+            number: 0,
+            animatedNumber: 0
+        },
+        watch: {
+            number: function (newValue, oldValue) {
+                var vm = this
+                function animate(time) {
+                    requestAnimationFrame(animate)
+                    TWEEN.update(time)
+                }
+                new TWEEN.Tween({ tweeningNumber: oldValue })
+                  .easing(TWEEN.Easing.Quadratic.Out)
+                  .to({ tweeningNumber: newValue }, 500)
+                  .onUpdate(function () {
+                      vm.animatedNumber = this.tweeningNumber.toFixed(0)
+                  })
+                  .start()
+                animate()
+            }
+        }
+    })
+</script>
+
+</html>

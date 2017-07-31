@@ -1,0 +1,254 @@
+﻿<Application
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    StartupUri="DocumentWindow.xaml">
+  <Application.Resources>
+
+    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+      <Setter Property="ClipToBounds" Value="False" />
+      <Setter Property="Margin" Value="2" />
+      <Setter Property="Padding" Value="10,2,10,4" />
+      <Setter Property="Background">
+        <Setter.Value>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientBrush.GradientStops>
+              <GradientStopCollection>
+                <GradientStop Color="#66666666" Offset="0" />
+                <GradientStop Color="transparent" Offset="1" />
+              </GradientStopCollection>
+            </GradientBrush.GradientStops>
+          </LinearGradientBrush>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="FontSize" Value="8.5pt" />
+      <Setter Property="FontFamily" Value="Arial" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Grid x:Name="ButtonGrid" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+              <Rectangle x:Name="GelBackground" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="2">
+                <Rectangle.Stroke>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint=".5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                      <TransformGroup>
+                        <TransformGroup.Children>
+                          <TransformCollection>
+                            <RotateTransform Angle="0" />
+                            <TranslateTransform X="0.5" Y="0.5" />
+                          </TransformCollection>
+                        </TransformGroup.Children>
+                      </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <LinearGradientBrush.GradientStops>
+                      <GradientStop Color="Transparent" Offset="0" />
+                      <GradientStop Color="#ffffff" Offset="1" />
+                    </LinearGradientBrush.GradientStops>
+                  </LinearGradientBrush>
+                </Rectangle.Stroke>
+              </Rectangle>
+              <Rectangle x:Name="OutlineMask" RadiusX="10" RadiusY="10" Fill="Transparent" StrokeThickness="1" Stroke="#bbffffff" />
+              <Rectangle x:Name="Shine" RadiusY="6" RadiusX="6" VerticalAlignment="Top" Stroke="Transparent" Margin="7,3,7,0" Height="7">
+                <Rectangle.Fill>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientBrush.GradientStops>
+                      <GradientStopCollection>
+                        <GradientStop Color="#ccffffff" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                      </GradientStopCollection>
+                    </GradientBrush.GradientStops>
+                  </LinearGradientBrush>
+                </Rectangle.Fill>
+              </Rectangle>
+              <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                  TextBlock.Foreground="{TemplateBinding Foreground}" TextBlock.FontSize="{TemplateBinding FontSize}" 
+                  TextBlock.FontWeight="{TemplateBinding FontWeight}" Margin="{TemplateBinding Padding}" />
+              <Rectangle x:Name="ContentMask" RadiusX="10" RadiusY="10" Fill="Transparent" StrokeThickness="0" />
+            </Grid>
+            <ControlTemplate.Resources>
+            </ControlTemplate.Resources>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="ButtonGrid">
+                <EventTrigger.Actions>
+                  <BeginStoryboard Name="AnimatedStroke">
+                    <BeginStoryboard.Storyboard>
+                      <Storyboard TargetName="GelBackground" TargetProperty="(Rectangle.Stroke).(LinearGradientBrush.RelativeTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
+                        <DoubleAnimation From="0" To="360" Duration="00:00:1" RepeatBehavior="Forever" />
+                      </Storyboard>
+                    </BeginStoryboard.Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="ButtonGrid">
+                <EventTrigger.Actions>
+                  <StopStoryboard BeginStoryboardName="AnimatedStroke" />
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="GelBackground" Property="Fill">
+                  <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                      <GradientBrush.GradientStops>
+                        <GradientStopCollection>
+                          <GradientStop Color="Navy" Offset="0" />
+                          <GradientStop Color="#99ccff" Offset="1" />
+                        </GradientStopCollection>
+                      </GradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+                <Setter TargetName="OutlineMask" Property="Stroke" Value="Transparent" />
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="OutlineMask" Property="Stroke" Value="#33000080" />
+                <Setter TargetName="ContentMask" Property="Fill">
+                  <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                      <GradientBrush.GradientStops>
+                        <GradientStopCollection>
+                          <GradientStop Color="#33000000" Offset="0" />
+                          <GradientStop Color="transparent" Offset="1" />
+                        </GradientStopCollection>
+                      </GradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="GelBackground" Property="Fill" Value="#777777" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Opacity" Value=".3" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DropDownButton" BasedOn="{x:Null}" TargetType="{x:Type ToggleButton}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Grid Background="{TemplateBinding Background}">
+              <Grid Width="20" Height="20" HorizontalAlignment="Right">
+                <Ellipse Margin="1" Fill="{TemplateBinding Background}" />
+                <Rectangle Stroke="{x:Null}" RenderTransformOrigin="0.5,0.5" Margin="4,8,4,8">
+                  <Rectangle.Fill>
+                    <DrawingBrush>
+                      <DrawingBrush.Drawing>
+                        <GeometryDrawing Brush="#FFFEFEFE" Geometry="F1 M 74.7816,144.064L 133.236,144.064L 104.009,173.292L 74.7816,144.064 Z "/>
+                      </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                  </Rectangle.Fill>
+                </Rectangle>
+              </Grid>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+      <Setter Property="SnapsToDevicePixels" Value="true"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ComboBox}">
+            <Grid>
+              <ToggleButton Background="Transparent" Style="{StaticResource DropDownButton}" x:Name="ToggleButton" 
+                  Focusable="False" Foreground="{TemplateBinding Foreground}"
+                  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press"/>
+              <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,3,23,3" x:Name="ContentSite" 
+                  Content="{TemplateBinding SelectionBoxItem}" 
+                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                  TextBlock.Foreground="{TemplateBinding Foreground}" 
+                  IsHitTestVisible="False"/>
+              <TextBox HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" 
+                  Visibility="Collapsed" Style="{x:Null}" VerticalAlignment="Center" Focusable="False" 
+                  Background="{x:Null}" IsReadOnly="True" BorderBrush="{x:Null}" 
+                  Foreground="{TemplateBinding Foreground}"/>
+              <Popup IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" 
+                  x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide">
+                <Grid MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" 
+                    x:Name="DropDown" SnapsToDevicePixels="True">
+                  <Grid >
+                    <Rectangle Fill="#22ffffff" Stroke="{TemplateBinding Foreground}" Margin="1" />
+                    <Rectangle Margin="2">
+                      <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0.00304914,0.00859468" EndPoint="0.988978,0.992224">
+                          <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="Navy" Offset="0"/>
+                            <GradientStop Color="#99ccff" Offset="1"/>
+                          </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                      </Rectangle.Fill>
+                    </Rectangle>
+                  </Grid>
+                  <DockPanel LastChildFill="True">
+                    <ScrollViewer Margin="5" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" 
+                        VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                      <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                    </ScrollViewer>
+                  </DockPanel>
+                </Grid>
+              </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Background" Value="#88AAAAFF" TargetName="ToggleButton" />
+              </Trigger>
+              <Trigger Property="IsGrouping" Value="true">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+              </Trigger>
+              <Trigger Property="IsEditable" Value="true">
+                <Setter Property="IsTabStop" Value="false"/>
+                <Setter Property="Visibility" Value="Visible" TargetName="PART_EditableTextBox"/>
+                <Setter Property="Focusable" Value="True" TargetName="PART_EditableTextBox"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.75" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+      <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+      <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+      <Setter Property="Padding" Value="3,0,3,0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+            <Grid Background="{TemplateBinding Background}">
+              <Rectangle Stroke="#ccffffff" Margin="2" x:Name="Highlight"  Visibility="Collapsed" />
+              <ContentPresenter Margin="8" 
+                  TextBlock.Foreground="{Binding Path=Foreground,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}" 
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Visibility" TargetName="Highlight" Value="Visible"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+  </Application.Resources>
+</Application>

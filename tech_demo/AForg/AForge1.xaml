@@ -1,0 +1,17 @@
+﻿<Window x:Class="tech_demo.AForg.AForge1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:aforge="clr-namespace:AForge.Controls;assembly=AForge.Controls"
+        WindowStartupLocation="Manual"
+        Title="AForgeForCamera"  
+        Width="400" Height="300" 
+        Loaded="Window_Loaded" 
+        Closing="Window_Closing" 
+        >
+    <Grid>
+        <wfi:WindowsFormsHost Grid.Row="0">
+            <aforge:VideoSourcePlayer x:Name="sourcePlayer" Width="174" Height="109"></aforge:VideoSourcePlayer>
+        </wfi:WindowsFormsHost>
+    </Grid>
+</Window>

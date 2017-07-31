@@ -1,0 +1,29 @@
+﻿<Application x:Class="DragControlHelperTest.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DragControlHelperTest"
+             xmlns:UICommon="clr-namespace:UICommon.Controls;assembly=UICommon"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!--Thumb控件模板-->
+        <ControlTemplate x:Key="ct" TargetType="{x:Type Thumb}">
+            <Grid x:Name="bg" Background="{TemplateBinding ContentControl.Background}">
+            </Grid>
+        </ControlTemplate>
+        <!--Txt模板-->
+        <ControlTemplate x:Key="TxtThumbTemplate" TargetType="{x:Type Control}">
+            <Grid>
+                <Grid>
+                    <UICommon:TxtThumb x:Name="txtThumb" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"  Cursor="SizeAll" Template="{StaticResource ct}" Margin="-3 -3 0 0" Width="5" Height="5" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    </UICommon:TxtThumb>
+                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
+                </Grid>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="txtThumb" Property="Background" Value="Red"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Application.Resources>
+</Application>

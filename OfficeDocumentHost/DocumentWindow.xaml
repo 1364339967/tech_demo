@@ -1,0 +1,94 @@
+﻿<Window x:Class="OfficeDocumentHost.DocumentWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:odh="clr-namespace:OfficeDocumentHost" 
+    xmlns:dsoFramer="clr-namespace:AxDSOFramer;assembly=AxInterop.DSOFramer"
+    Title="WPF Office Document Host" Height="800" Width="600"
+    Loaded="InitializeFramerControl"
+    Closing="WindowClosing"
+    SizeChanged="WindowSizeChanged">
+
+  <Window.Resources>
+
+    <XmlDataProvider x:Key="OfficePrograms" XPath="Programs">
+      <x:XData>
+        <Programs xmlns="">
+          <Program ProgID="Excel.Sheet" Name="Excel" UntitledDocumentName="Book1.xls" />
+          <Program ProgID="PowerPoint.Show" Name="PowerPoint" UntitledDocumentName="Presentation1.ppt" />
+          <Program ProgID="Visio.Drawing" Name="Visio" UntitledDocumentName="Drawing1.vsd" />
+          <Program ProgID="Word.Document" Name="Word" UntitledDocumentName="Document1.doc" />
+        </Programs>
+      </x:XData>
+    </XmlDataProvider>
+
+    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Margin" Value="5" />
+      <Setter Property="Width" Value="75" />
+      <Setter Property="Height" Value="75" />
+    </Style>
+
+  </Window.Resources>
+
+  <Window.CommandBindings>
+    <CommandBinding Command="odh:DocumentWindow.CloseDocument" CanExecute="CanCloseDocument" Executed="CloseDocumentExecuted" />
+    <CommandBinding Command="odh:DocumentWindow.CreateDocument" CanExecute="CanCreateDocument" Executed="CreateDocumentExecuted" />
+    <CommandBinding Command="odh:DocumentWindow.OpenDocument" CanExecute="CanOpenDocument" Executed="OpenDocumentExecuted" />
+    <CommandBinding Command="odh:DocumentWindow.SaveDocument" CanExecute="CanSaveDocument" Executed="SaveDocumentExecuted" />
+    <CommandBinding Command="odh:DocumentWindow.SaveDocumentAs" CanExecute="CanSaveDocumentAs" Executed="SaveDocumentAsExecuted" />
+  </Window.CommandBindings>
+
+  <Window.InputBindings>
+    <KeyBinding Command="odh:DocumentWindow.CloseDocument" Key="W" Modifiers="Control" />
+    <KeyBinding Command="odh:DocumentWindow.CreateDocument" Key="N" Modifiers="Control" />
+    <KeyBinding Command="odh:DocumentWindow.OpenDocument" Key="O" Modifiers="Control" />
+    <KeyBinding Command="odh:DocumentWindow.SaveDocument" Key="S" Modifiers="Control" />
+    <KeyBinding Command="odh:DocumentWindow.SaveDocumentAs" Key="S" Modifiers="Shift+Control" />
+  </Window.InputBindings>
+
+  <Grid>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid.Background>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientBrush.GradientStops>
+          <GradientStop Color="Navy" Offset="0" />
+          <GradientStop Color="#99ccff" Offset="1" />
+        </GradientBrush.GradientStops>
+      </LinearGradientBrush>
+    </Grid.Background>
+
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="30,15,0,0" HorizontalAlignment="Left"
+        TextBlock.FontFamily="Arial" TextBlock.FontSize="10" 
+        TextBlock.Foreground="White" TextBlock.FontWeight="SemiBold">
+      <TextBlock Margin="0,4,6,0">Office Host:</TextBlock>
+      <ComboBox x:Name="OfficeProgram" SelectedValuePath="@ProgID" SelectedIndex="0" 
+          IsEnabled="{Binding ElementName=NewButton, Path=IsEnabled}" 
+          ItemsSource="{Binding Source={StaticResource OfficePrograms}, XPath=Program}" >
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding XPath=@Name}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </StackPanel>
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="25,15">
+      <Button Command="odh:DocumentWindow.CreateDocument" x:Name="NewButton">New</Button>
+      <Button Command="odh:DocumentWindow.OpenDocument">Open...</Button>
+      <Button Command="odh:DocumentWindow.SaveDocument">Save</Button>
+      <Button Command="odh:DocumentWindow.SaveDocumentAs">Save As...</Button>
+      <Button Command="odh:DocumentWindow.CloseDocument">Close</Button>
+    </StackPanel>
+
+    <WindowsFormsHost Margin="15,0,15,15" Grid.Row="2" x:Name="wfHost">
+      <dsoFramer:AxFramerControl x:Name="framer" OnDocumentOpened="DocumentOpened" OnSaveCompleted="SaveCompleted" />
+    </WindowsFormsHost>
+
+  </Grid>
+
+</Window>

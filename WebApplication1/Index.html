@@ -1,0 +1,1032 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, bady {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        .pageDiv {
+            width: 1920px;
+            height: 960px;
+            background: url("img/map.png") no-repeat;
+            z-index: 0;
+        }
+        /*标题栏*/
+        .topDiv {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 85px;
+            background-color: black;
+        }
+
+        .topContent {
+            margin: 0 auto;
+            width: 300px;
+            height: 100%;
+            font-size: 25px;
+        }
+
+        h1 {
+            color: white;
+            line-height: 85px;
+        }
+        /*按钮*/
+        .bottomBtn {
+            position: fixed;
+            bottom: -20px;
+            width: 100%;
+            height: 48px;
+            z-index: 3;
+        }
+
+        .bottomImg {
+            margin: 0 auto;
+            width: 48px;
+            height: 48px;
+            background: url("img/up.png") no-repeat;
+        }
+
+            .bottomImg:hover {
+                cursor: pointer;
+            }
+
+        .checkbox:hover {
+            cursor: pointer;
+        }
+        /*底部区域*/
+        .bottomDiv {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            display: none;
+            z-index: 1;
+            font: normal 16px '微软雅黑';
+            padding: 5px 5px 20px 5px;
+        }
+        /*设备信息区域*/
+        .equipmentMes {
+            position: fixed;
+            right: 0;
+            top: 55px;
+            width: 260px;
+            border: 1px solid white;
+            font: normal 16px '微软雅黑';
+            color: white;
+            text-align: left;
+        }
+
+            .equipmentMes > div > div {
+                display: inline-block;
+            }
+
+        .equipmentMes_title {
+            display: inline-block;
+            width: 112px;
+            text-align: right;
+        }
+        /*操作*/
+        .operatorDiv {
+            min-width: 50%;
+            clear: both;
+            background-color: lightgray;
+            text-align: left;
+        }
+
+            .operatorDiv > span {
+                float: left;
+            }
+
+            .operatorDiv > div > div {
+                float: left;
+            }
+        /*操作提示*/
+        .operatorHint {
+            clear: both;
+            background-color: lightgray;
+            text-align: left;
+        }
+
+            .operatorHint > span {
+                float: left;
+            }
+
+            .operatorHint > div {
+                float: left;
+            }
+        /*状态信息*/
+        .stateDiv {
+            width: 100%;
+            float: left;
+            text-align: left;
+            background-color: lightgray;
+        }
+        /*小组信息*/
+        .groupDiv {
+            clear: both;
+        }
+
+        .group {
+            min-height: 48px;
+            line-height: 48px;
+            width: 33.2%;
+            float: left;
+            font-size: 22px;
+            border: 1px solid white;
+            background-color: gray;
+        }
+
+        .groupname {
+            height: inherit;
+            line-height: inherit;
+            float: left;
+        }
+
+            .groupname:hover {
+                cursor: pointer;
+            }
+
+        .equipmentCss {
+            height: inherit;
+            float: left;
+            line-height: 48px;
+        }
+
+            .equipmentCss span {
+                float: left;
+                display: inline-block;
+                height: 100%;
+                line-height: inherit;
+            }
+
+            .equipmentCss div {
+                width: 48px;
+                height: 48px;
+                float: left;
+            }
+        /*状态灯*/
+        .excursion {
+            position: relative;
+            top: -30px;
+        }
+
+        .imgDiv {
+            border: none;
+            width: 32px;
+            height: 32px;
+        }
+
+            .imgDiv:hover {
+                cursor: pointer;
+            }
+
+        .red {
+            background: url("img/red.png") no-repeat;
+            background-size: 32px 32px;
+        }
+
+        .yellow {
+            background: url("img/yellow.png") no-repeat;
+            background-size: 32px 32px;
+        }
+
+        .green {
+            background: url("img/green.png") no-repeat;
+            background-size: 32px 32px;
+        }
+        /*小号灯*/
+        .mini-imgDiv {
+            border: none;
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+        }
+
+            .mini-imgDiv:hover {
+                cursor: pointer;
+            }
+
+        .mini-red {
+            background: url("img/red.png") no-repeat;
+            background-size: 16px 16px;
+        }
+
+        .mini-yellow {
+            background: url("img/yellow.png") no-repeat;
+            background-size: 16px 16px;
+        }
+
+        .mini-green {
+            background: url("img/green.png") no-repeat;
+            background-size: 16px 16px;
+        }
+        /*大号灯*/
+        .max-imgDiv {
+            border: none;
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+            line-height: 48px;
+        }
+
+            .max-imgDiv:hover {
+                cursor: pointer;
+            }
+
+        .max-red {
+            background: url("img/red.png") no-repeat;
+            background-size: 48px 48px;
+        }
+
+        .max-yellow {
+            background: url("img/yellow.png") no-repeat;
+            background-size: 48px 48px;
+        }
+
+        .max-green {
+            background: url("img/green.png") no-repeat;
+            background-size: 48px 48px;
+        }
+        /*绘制选择框*/
+        .selectDiv {
+            border: 2px solid yellow;
+        }
+
+        /*表格*/
+        table {
+            border-collapse: collapse;
+            border: none;
+            position: absolute;
+        }
+
+        tr, td {
+            width: 32px;
+            height: 32px;
+        }
+
+        .none {
+            background: none !important;
+        }
+
+        .single {
+            width: 32px !important;
+        }
+
+        .double {
+            width: 32px !important;
+        }
+
+        .third {
+            width: 90px !important;
+        }
+
+        .table1 {
+            left: 35px;
+            top: 345px;
+            width: 1877px;
+        }
+
+        .table2 {
+            left: 35px;
+            top: 530px;
+            width: 1877px;
+        }
+
+        .table3 {
+            left: 328px;
+            top: 248px;
+        }
+
+        .table4 {
+            left: 310px;
+            top: 625px;
+        }
+
+        .table5 {
+            left: 390px;
+            top: 315px;
+        }
+
+        .table6 {
+            left: 520px;
+            top: 500px;
+        }
+
+        .table7 {
+            left: 1420px;
+            top: 315px;
+        }
+
+        .table8 {
+            left: 1870px;
+            top: 315px;
+        }
+
+        .table9 {
+            left: 390px;
+            top: 500px;
+        }
+
+        .table10 {
+            left: 1130px;
+            top: 500px;
+        }
+
+        .table11 {
+            left: 490px;
+            top: 315px;
+        }
+
+        .table12 {
+            left: 1130px;
+            top: 315px;
+        }
+
+        .table13 {
+            left: 900px;
+            top: 315px;
+        }
+
+        .table14 {
+            left: 870px;
+            top: 500px;
+        }
+
+        .table15 {
+            left: 1390px;
+            top: 500px;
+        }
+
+        .table16 {
+            left: 1870px;
+            top: 500px;
+        }
+
+        .table17 {
+            left: 940px;
+            top: 500px;
+        }
+    </style>
+    <script type="text/javascript">
+        var selectTd;
+        var isDrawRect = false,
+            mouseDown = null,
+            mouseUp = null;
+        function Point(left, top) {
+            this.x = left;
+            this.y = top;
+        }
+        function rect(x1, y1, x2, y2) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.width = Math.abs(x1 - x2);
+            this.height = Math.abs(y1 - y2);
+        }
+
+
+        var /*设备编号*/
+            equipmentNum_suf = "G25",
+            /*设备类型*/
+            equipmentType = { "anchoring": "锚段", "lightning": "避雷针", "brace": "支柱" },
+            /*设备对象*/
+            equipment = {
+                id: 1,
+                equipmentType: "支柱",
+                equipmentNum: "144(GZ5)",
+                equipmentFacture: "宝鸡器材有限公司",
+                startKM: "K500+235",
+                endKM: "K520+230",
+                lastTime: "2017年7月24日",
+                nextTime: "2017年7月28日",
+                isCheck: false
+            },
+            /*小组设备信息*/
+            groupEquipment = [
+                {
+                    "groupname": "车梯一组",
+                    "brace": [],
+                    "lightning": [],
+                    "anchoring": []
+                },
+                {
+                    "groupname": "车梯二组",
+                    "brace": [],
+                    "lightning": [],
+                    "anchoring": []
+                },
+                {
+                    "groupname": "车梯三组",
+                    "brace": [],
+                    "lightning": [],
+                    "anchoring": []
+                }
+            ]
+
+        var selectedDiv = [];
+
+        /*加载小组设备信息*/
+        function LoadGroupEquipment() {
+            $(".groupDiv").children().remove();
+            $(groupEquipment).each(function (i, el) {
+                var groupDiv = $("<div></div>").addClass("group");
+                groupDiv.append($("<div></div>").addClass("groupname").text(el.groupname + "："));
+                var equipmentDiv = $("<div></div>").addClass("equipmentCss");
+                groupDiv.append(equipmentDiv);
+                if (el.brace.length > 0) {
+                    equipmentDiv.append($("<span></span>").text(equipmentType.brace + "："))
+                    $(el.brace).each(function (brace_i, brace_El) {
+                        equipmentDiv.append($("<div></div>").addClass("max-imgDiv").addClass(GetStateCss(brace_El.state)).text(brace_El.num).attr("id", "brace" + brace_El.num));
+                    });
+                }
+                if (el.lightning.length > 0) {
+                    equipmentDiv.append($("<span></span>").text(equipmentType.lightning + "："));
+                    $(el.lightning).each(function (brace_i, lightning_El) {
+                        equipmentDiv.append($("<div></div>").addClass("max-imgDiv").addClass(GetStateCss(lightning_El.state)).text(lightning_El.num).attr("id", "lightning" + lightning_El.num));
+                    });
+                }
+                if (el.anchoring.length > 0) {
+                    equipmentDiv.append($("<span></span>").text(equipmentType.anchoring + "："));
+                    $(el.anchoring).each(function (brace_i, anchoring_El) {
+                        equipmentDiv.append($("<div></div>").addClass("max-imgDiv").addClass(GetStateCss(anchoring_El.state)).text(anchoring_El.num).attr("id", "anchoring" + anchoring_El.num));
+                    });
+                }
+                $(".groupDiv").append(groupDiv);
+            });
+
+            function GetStateCss(state) {
+                var statecss = "";
+                switch (state) {
+                    case "green":
+                        statecss = "max-green";
+                        break;
+                    case "yellow":
+                        statecss = "max-yellow";
+                        break;
+                    case "red":
+                        statecss = "max-red";
+                        break;
+                }
+                return statecss;
+            }
+        }
+        $(function () {
+            Array.prototype.remove = function (obj) {
+                for (var i = 0; i < this.length; i++) {
+                    var temp = this[i];
+                    if (!isNaN(obj)) {
+                        temp = i;
+                    }
+                    if (temp == obj) {
+                        for (var j = i; j < this.length; j++) {
+                            this[j] = this[j + 1];
+                        }
+                        this.length = this.length - 1;
+                    }
+                }
+            }
+            /*下拉信息*/
+            $(".bottomImg").on("click", function updown() {
+                $('.bottomDiv').slideToggle();
+            });
+            /*设备点*/
+            (function () {
+                $("td[class!='none']").html("<div class='imgDiv'></div>")
+                $("td[class='none']").html("<div class='imgDiv excursion'></div>")
+                var braceIndex = 1;
+                $(".table1 td div").each(function (index, el) {
+                    SetState($(el), braceIndex);
+                    braceIndex += 2;
+                });
+                braceIndex = 2;
+                $(".table2 td div").each(function (index, el) {
+                    SetState($(el), braceIndex);
+                    braceIndex += 2;
+                });
+                /*设置状态*/
+                function SetState($el, braceIndex) {
+                    if (!$el.hasClass("excursion")) {
+                        $el.attr("id", "brace" + braceIndex);
+                    }
+                    else if ([23, 24, 54, 55, 57, 58, 86, 87, 115, 116].indexOf(braceIndex) > -1) {
+                        $el.attr("id", "lightning" + braceIndex);
+                    }
+                    else if ([29, 31, 32, 33, 34, 35, 36, 37, 38, 40, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78].indexOf(braceIndex) > -1) {
+                        $el.attr("id", "anchoring" + braceIndex);
+                    }
+
+                    if (braceIndex < 40) {
+                        $el.addClass("green");
+                    }
+                    else if (braceIndex >= 40 && braceIndex <= 80) {
+                        $el.addClass("yellow");
+                    }
+                    else if (braceIndex > 80) {
+                        $el.addClass("red");
+                    }
+                }
+            })();
+            /*设备点击事件*/
+            function td_Click() {
+                var target = event.target;
+                var $target = $(target)
+                var $parent = $target;
+                var isGroup = false, isEquipment = false;
+                while ($parent.length>0) {
+                    if ($parent.hasClass("group")) {
+                        isGroup = true;
+                        break;
+                    }
+                    else if ($parent[0].nodeName.toLowerCase() === "table")
+                    {
+                        isEquipment = true;
+                        break;
+                    }
+                    $parent = $parent.parent();
+                }
+                if (isEquipment) {
+                    $('.bottomDiv').slideDown();
+                }
+                if (isEquipment || isGroup) {
+                    /*显示对应的设备信息*/
+                    var num = target.id;
+                    for (x in equipmentType) {
+                        num = num.replace(x, "");
+                        if (target.id.indexOf(x) > -1) {
+                            equipment.equipmentType = equipmentType[x];
+                        }
+                    }
+                    equipment.id = target.id;
+                    equipment.equipmentNum = num + equipmentNum_suf;
+                    equipment.startKM = "K500+" + (num * 1000).toString().substr(0, num.length + 1);
+                    equipment.endKM = "K500+" + ((num + 1) * 1000).toString().substr(0, num.length + 1);
+                    if ($target.hasClass("green")) {
+                        equipment.isCheck = true;
+                    }
+                    else {
+                        equipment.isCheck = false;
+                    }
+                    SetEquipment();
+                }
+
+                /*设置设备信息*/
+                function SetEquipment() {
+                    var keys = Object.keys(equipment);
+                    for (key in equipment) {
+                        if (key === "isCheck") {
+                            if (equipment[key]) {
+                                $("#" + key).prop("checked", "checked");
+                            }
+                            else {
+                                $("#" + key).removeProp("checked");
+                            }
+                        }
+                        else {
+                            $("#" + key).text(equipment[key]);
+                        }
+                    }
+                }
+            }
+            LoadGroupEquipment();
+            /*绘制选择框*/
+            (function () {
+                document.onmousedown = function () {
+                    var el = event.target;
+                    isDrawRect = true;
+                    mouseDown = new Point(event.pageX, event.pageY);
+                    dragrectangular("selectDiv", mouseDown.x, mouseDown.y, mouseDown.x, mouseDown.y);
+
+                    if ($(el).hasClass("imgDiv")) {
+                        td_Click();
+                    }
+                    if (el.id === "isCheck") {
+                        var checked = $(el).attr("checked");
+                        if (!$(el).is(":checked")) {
+                            $(el).prop("checked", "checked");
+                            $("table [id='" + equipment.id + "']").removeClass("yellow").removeClass("red").addClass("green")
+                            $(".groupDiv [id='" + equipment.id + "']").removeClass("max-red").removeClass("max-yellow").addClass("max-green");
+                        }
+                    }
+                }
+                document.onmousemove = function () {
+                    isDrawRect && dragrectangular("selectDiv", mouseDown.x, mouseDown.y, event.pageX, event.pageY);
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+                document.onmouseup = function () {
+                    isDrawRect = false;
+                    mouseUp = new Point(event.pageX, event.pageY);
+                    var selectDiv = document.getElementById("selectDiv");
+                    if (!!selectedDiv) { selectDiv.remove(); }
+                    isSelected();
+                }
+                /*绘制图形*/
+                function dragrectangular(id, start_x, start_y, end_x, end_y) {
+                    var h = Math.abs(start_x - end_x);
+                    var v = Math.abs(start_y - end_y);
+                    var left, top;
+
+                    //圆
+                    if (start_x < end_x) {
+                        //向右
+                        left = start_x;
+                    }
+                    else {
+                        //向左
+                        left = end_x;
+                    }
+                    if (end_y > start_y) {
+                        //向下
+                        top = start_y;
+                    }
+                    else {
+                        //向上
+                        top = end_y;
+                    }
+                    shape = document.getElementById(id);
+                    if (shape != null) {
+                        shape.style.position = 'absolute';
+                        parentDIV = shape.parentNode;
+                        if (parentDIV == null) {
+                            shape.style.left = left + 'px';
+                            shape.style.top = top + 'px';
+                        }
+                        else {
+                            shape.style.left = left - parentDIV.offsetLeft + 'px';
+                            shape.style.top = top - parentDIV.offsetTop + 'px';
+                        }
+                        shape.style.width = h + 'px';
+                        shape.style.height = v + 'px';
+                    }
+                    else {
+                        var div = document.createElement('div');
+                        div.id = id;
+                        div.className = "selectDiv";
+                        div.style.position = 'absolute';
+                        div.style.top = start_y + 'px';
+                        div.style.left = start_x + 'px';
+                        div.style.width = h + 'px';
+                        div.style.height = v + 'px';
+                        document.body.appendChild(div);
+                    }
+                }
+                /*判断球是否在选择框中*/
+                function isSelected() {
+                    $("td>div").each(function (i, el) {
+                        var $el = $(el);
+                        var r1 = new rect($el.offset().left, $el.offset().top, $el.offset().left + $el.width(), $el.offset().top + $el.height()),
+                            r2 = new rect(mouseDown.x, mouseDown.y, mouseUp.x, mouseUp.y);
+                        if (CrossLine(r1.x1, r1.x2, r1.y1, r2.y1, r2.y2, r2.x1)
+                            || CrossLine(r1.x1, r1.x2, r1.y1, r2.y1, r2.y2, r2.x2)
+                            || CrossLine(r1.x1, r1.x2, r1.y2, r2.y1, r2.y2, r2.x1)
+                            || CrossLine(r1.x1, r1.x2, r1.y2, r2.y1, r2.y2, r2.x2)
+                            || CrossLine(r2.x1, r2.x2, r2.y1, r1.y1, r1.y2, r1.x1)
+                            || CrossLine(r2.x1, r2.x2, r2.y1, r1.y1, r1.y2, r1.x2)
+                            || CrossLine(r2.x1, r2.x2, r2.y2, r1.y1, r1.y2, r1.x1)
+                            || CrossLine(r2.x1, r2.x2, r2.y2, r1.y1, r1.y2, r1.x2)) {
+                            if ($(el).attr("data-isSelected") === undefined) {
+                                var ep = {
+                                    type: "",
+                                    num: "",
+                                    state: ""
+                                };
+                                for (x in equipmentType) {
+                                    if (el.id.indexOf(x) > -1) {
+                                        ep.type = x;
+                                        ep.num = el.id.replace(x, "");
+                                        ep.state = $(el).hasClass("green") ? "green" : ($(el).hasClass("yellow") ? "yellow" : "red");
+                                    }
+                                }
+                                $(el).attr("data-isSelected", true);
+                                selectedDiv.push(ep);
+                            }
+                        }
+                    })
+                    console.log(selectedDiv);
+                    allocation();
+                    selectedDiv = [];
+                }
+                function CrossLine(left, right, y, top, bottom, x) {
+                    //判断一根横线和一根竖线是否交叉
+                    //横线有三个参数：left, right和y
+                    //竖线有三个参数：top, bottom和x
+                    return (top < y) && (bottom > y) && (left < x) && (right > x);
+                }
+                /*分配设备*/
+                function allocation() {
+                    if (selectedDiv.length === 0) return;
+                    var selectedGroup = $("#selectGroupName").text();
+                    $(groupEquipment).each(function (groupEquipment_i, groupEquipment_el) {
+                        if (groupEquipment_el.groupname === selectedGroup) {
+                            /*添加选中设备*/
+                            $(selectedDiv).each(function (selectedDiv_i, selectedDiv_el) {
+                                var isExict = false;
+                                groupEquipment_el[selectedDiv_el.type].push({ num: selectedDiv_el.num, state: selectedDiv_el.state });
+                            });
+                            /*渲染小组设备*/
+                            LoadGroupEquipment();
+                        }
+                    })
+                }
+            })();
+            /*单击小组设备显示设备信息*/
+            (function () {
+                $(".groupDiv").on("click", function () {
+                    var $target = $(event.target);
+                    if ($target.hasClass("max-imgDiv")) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        td_Click();
+                    }
+                    else if ($target.hasClass("groupname")) {
+                        /*选择小组*/
+                        $("#selectGroupName").text($target.text().replace("：", ""));
+                    }
+                });
+                $(".groupDiv").on("dblclick", function () {
+                    var $el = $(event.target);
+                    if ($el.hasClass("max-imgDiv")) {
+                        $(groupEquipment).each(function (groupEquipment_i, groupEquipment_el) {
+                            $(groupEquipment_el).each(function (group_i, group) {
+                                for (x in group) {
+                                    if (group[x] instanceof Array) {
+                                        if ($el.attr("id").indexOf(x) > -1) {
+                                            $(group[x]).each(function (group_child_i, group_child) {
+                                                if (group_child.num === $el.attr("id").replace(x, "")) {
+                                                    group[x].remove(group_child_i);
+                                                    $("[id='" + $el.attr("id") + "'").removeAttr("data-isselected");
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            })
+                        });
+                        /*渲染小组设备*/
+                        LoadGroupEquipment();
+                        event.stopPropagation();
+                        event.preventDefault();
+                    }
+                })
+            })();
+        });
+    </script>
+</head>
+<body>
+    <div class="pageDiv">
+        <div class="topDiv">
+            <div class="topContent">
+                <h1>可视化分工</h1>
+            </div>
+            <div class="topBtn"></div>
+        </div>
+        <div class="bottomBtn">
+            <div class="bottomImg"></div>
+        </div>
+        <div class="bottomDiv">
+            <div class="stateDiv">
+                <span>选中小组(点击对应小组名可选中)：</span>
+                <span id="selectGroupName">车梯一组</span>
+            </div>
+            <div class="groupDiv">
+                <div class="group">
+                    <div class="groupname">车梯一组：</div>
+                    <div class="equipmentCss">
+                        <span>支柱：</span>
+                        <div class="max-imgDiv max-red">1</div>
+                        <div class="max-imgDiv max-red">2</div>
+                        <div class="max-imgDiv max-green">3</div>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="groupname">车梯二组：</div>
+                    <div class="equipmentCss">
+                        <span>支柱：</span>
+                        <div class="max-imgDiv max-red">11</div>
+                        <div class="max-imgDiv max-green">21</div>
+                        <span>避雷针：</span>
+                        <div class="max-imgDiv max-green">31</div>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="groupname">车梯三组：</div>
+                    <div class="equipmentCss">
+                        <span>锚段：</span>
+                        <div class="max-imgDiv max-green">10</div>
+                        <div class="max-imgDiv max-green">20</div>
+                        <div class="max-imgDiv max-green">30</div>
+                    </div>
+                </div>
+            </div>
+            <div class="operatorDiv">
+                <span>设备状态：</span>
+                <div>
+                    <div class="mini-imgDiv mini-green"></div>
+                    <div>:正常;</div>
+                    <div class="mini-imgDiv mini-yellow"></div>
+                    <div>:警告;</div>
+                    <div class="mini-imgDiv mini-red"></div>
+                    <div>:超修;</div>
+                </div>
+            </div>
+            <div class="operatorHint">
+                <span>操作提示：</span>
+                <div>
+                    <div>小组选择设备：拖拉出矩形框，使边框穿过设备状态球</div>
+                    <div>小组移除设备：双击小组设备状态球</div>
+                </div>
+            </div>
+        </div>
+        <div class="equipmentMes">
+            <div>
+                <div class="equipmentMes_title">设备编号：</div>
+                <div class="equipmentMes_content" id="equipmentNum"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">设备类型：</div>
+                <div class="equipmentMes_content" id="equipmentType"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">设备厂商：</div>
+                <div class="equipmentMes_content" id="equipmentFacture"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">起始公里标：</div>
+                <div class="equipmentMes_content" id="startKM"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">结束公里标：</div>
+                <div class="equipmentMes_content" id="endKM"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">上次检修日期：</div>
+                <div class="equipmentMes_content" id="lastTime"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">下次检修日期：</div>
+                <div class="equipmentMes_content" id="nextTime"></div>
+            </div>
+            <div>
+                <div class="equipmentMes_title">已检修：</div>
+                <div class="equipmentMes_content">
+                    <input type="checkbox" id="isCheck" class="checkbox" />
+                    (点击可检修)
+                </div>
+            </div>
+        </div>
+        <table class="table1">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 35px;"></td>
+                <td class="none" style="width: 35px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+            </tr>
+        </table>
+        <table class="table2">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td class="none" style="width: 32px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="none" style="width: 36px;"></td>
+            </tr>
+        </table>
+        <table class="table3">
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table class="table4">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

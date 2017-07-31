@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionTest", "ConnectionTest\ConnectionTest.csproj", "{486082D2-E972-4016-9B6B-B8E606A9997F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandTest", "CommandTest\CommandTest.csproj", "{F7C7E86D-E2D0-4270-8B75-1D629290967D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{486082D2-E972-4016-9B6B-B8E606A9997F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486082D2-E972-4016-9B6B-B8E606A9997F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486082D2-E972-4016-9B6B-B8E606A9997F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486082D2-E972-4016-9B6B-B8E606A9997F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C7E86D-E2D0-4270-8B75-1D629290967D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C7E86D-E2D0-4270-8B75-1D629290967D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C7E86D-E2D0-4270-8B75-1D629290967D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C7E86D-E2D0-4270-8B75-1D629290967D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

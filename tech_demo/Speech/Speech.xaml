@@ -1,0 +1,32 @@
+﻿<Window x:Class="tech_demo.Speech.Speech"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DotNetSpeech" Height="400" Width="500">
+    <Grid Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBox Name="speakTxt" AcceptsReturn="True"  AcceptsTab="True"  TextWrapping="Wrap"  Grid.Row="0" Text="{Binding txt}"/>
+        <DockPanel Grid.Row="1">
+            <Button Name="play" Content="播放" Width="50" Click="play_Click_1"/>
+            <Button Name="pause" Content="暂停" Width="50" Click="pause_Click_1"/>
+            <Button Name="resume" Content="继续" Width="50" Click="resume_Click_1"/>
+            <Button Name="replay" Content="重新播放" Width="60" Click="replay_Click_1"/>
+            <Button Name="exportFile" Content="导出文件" Width="70" Click="exportFile_Click_1"/>
+            <ComboBox Name="cbbVoiceList" SelectedValue="{Binding Voice}" DisplayMemberPath="voiceName" SelectedValuePath="voiceId" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>          
+        </DockPanel>
+        <DockPanel Grid.Row="2">
+            <Label Content="音量:" VerticalAlignment="Center"/>
+            <TextBlock Name="volumnTxt" Text="{Binding ElementName=volumn,Path=Value}"  Width="30" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Slider Name="volumn" Value="{Binding Volume}" Maximum="100" SmallChange="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+        </DockPanel>
+        <DockPanel Grid.Row="3">
+            <Label Content="语速:" VerticalAlignment="Center"/>
+            <TextBlock Name="speedTxt" Text="{Binding ElementName=speed,Path=Value}"  Width="30" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Slider Name="speed" Value="{Binding Rate}" Maximum="10" Minimum="-10" SmallChange="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+        </DockPanel>
+    </Grid>
+</Window>

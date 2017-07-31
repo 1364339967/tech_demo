@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script type="text/javascript">
+        function checkCashRegister(price, cash, cid) {
+            var change = new Array(),
+                baseArr = { "PENNY": 0.01, "NICKEL": 0.05, "DIME": 0.1, "QUARTER": 0.25, "ONE": 1, "FIVE": 5, "TEN": 10, "TWENTY": 20, "ONE HUNDRED": 100.00 },
+                length = Object.keys(baseArr).length,
+                isSuc = false;
+
+            /*最大公约数*/
+            function GetMaxComon(basevalue, value, diff) {
+                if (basevalue > diff) return 0;
+                var num1 = parseInt(value / basevalue);
+                var num2 = parseInt(diff / basevalue);
+                return num1 > num2 ? num2 : num1;
+            }
+            /*递归数组*/
+            function travelArr(arr, diff, index) {
+                /*数组循环*/
+                var name = Object.keys(baseArr)[index],
+                    value = arr[index][1],
+                    num = GetMaxComon(baseArr[name], value, diff);
+                for (var j = num ; j > -1; j !== 0 && change.pop(), j--) {
+                    /*元素内部循环*/
+                    value = (baseArr[name] * j).toFixed(2);
+                    var child_diff = (diff - value).toFixed(2);
+                    if (j !== 0) change.push([name, parseFloat(value)]);
+                    if (child_diff > 0) {
+                        if (index !== 0) {
+                            travelArr(arr, child_diff, index - 1);
+                            if (isSuc) break;
+                        }
+                    }
+                    else if (child_diff === 0.0.toFixed(2)) {
+                        isSuc = true;
+                        break;
+                    }
+                }
+            }
+
+            var diff = cash - price;
+            for (var i = 0; i < length; i++) {
+                diff = (diff - cid[i][1]).toFixed(2);
+            }
+            if (diff === 0.0.toFixed(2)) {
+                change = "Closed";
+            }
+            else {
+                travelArr(cid, cash - price, length - 1);
+                if (!isSuc) {
+                    change = "Insufficient Funds";
+                }
+            }
+            return change;
+        }
+
+
+        checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+    </script>
+</head>
+<body>
+</body>
+</html>
